@@ -43,6 +43,7 @@ services:
         restart: always
         depends_on:
             - web
+            - php1
 
     web2:
         container_name: web2
@@ -63,6 +64,7 @@ services:
         restart: always
         depends_on:
             - web
+            - php2
 
     php:
         container_name: php

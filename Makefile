@@ -36,9 +36,14 @@ docker-down:
 docker-clean:
 	@-docker-compose -f "_docker/docker-compose.yml" exec -T php php composer.phar docker:cache:clear
 
-docker-php:
+docker-php1:
 	@echo "\nWelcome to PHP machine\n"
-	@docker exec -i -t web_php bash
+	@docker exec -i -t php1 bash
+	@exit
+
+docker-php2:
+	@echo "\nWelcome to PHP machine\n"
+	@docker exec -i -t php2 bash
 	@exit
 
 docker-remove-images:
