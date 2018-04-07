@@ -1,0 +1,17 @@
+categories.tree:
+    type:     rest
+    resource: CategoriesBundle\Controller\Tree\TreeController
+
+categories.create:
+    type:     rest
+    resource: CategoriesBundle\Controller\Category\CreateController
+    defaults: {_format: json}
+
+categories.get:
+    type:     rest
+    resource: CategoriesBundle\Controller\Category\GetController
+
+categories.update:
+    type:     rest
+    resource: CategoriesBundle\Controller\Category\UpdateController
+    defaults: {_format: json}

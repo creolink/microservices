@@ -1,0 +1,9 @@
+app:
+    resource: '@AppBundle/Resources/config/routing.yml'
+
+categories:
+    resource: '@CategoriesBundle/Resources/config/routing.yml'
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing/swaggerui.xml"
+    prefix:   /swagger

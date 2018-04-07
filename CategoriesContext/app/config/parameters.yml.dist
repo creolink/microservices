@@ -1,0 +1,12 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    secret:            6ceab3d65ff5665403d38e16401d19ff925db020
+
+    database_host:     mysql
+    database_name:     web
+    database_user:     root
+    database_password: root
+
+    locale:            en
