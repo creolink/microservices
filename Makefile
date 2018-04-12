@@ -12,7 +12,8 @@ help:
 	@echo "  Docker:"
 	@echo "   docker-up               Start docker for application (as daemon!)"
 	@echo "   docker-down             Stop docker"
-	@echo "   docker-php              Login into docker-php machine"
+	@echo "   docker-php-X            Login into docker-php-X machine"
+	@echo "   docker-server-X         Login into docker-server-X machine"
 	@echo "   docker-clean            Clean cache on docker-php machine"
 	@echo ""
 	@echo "   docker-remove-images    Removes all images and containers."
@@ -36,15 +37,25 @@ docker-down:
 docker-clean:
 	@-docker-compose -f "_docker/docker-compose.yml" exec -T php php composer.phar docker:cache:clear
 
-docker-php1:
-	@echo "\nWelcome to PHP machine\n"
+docker-php-1:
+	@echo "\nWelcome to PHP-1 machine\n"
 	@docker exec -i -t php1 bash
 	@exit
 
-docker-php2:
-	@echo "\nWelcome to PHP machine\n"
+docker-php-2:
+	@echo "\nWelcome to PHP-2 machine\n"
 	@docker exec -i -t php2 bash
 	@exit
 
 docker-remove-images:
 	@cd _docker/ && sh clean_images.sh
+
+docker-server-1:
+	@echo "\nWelcome to SERVER-1 machine\n"
+	@docker exec -i -t web1 bash
+	@exit
+
+docker-server-2:
+	@echo "\nWelcome to SERVER-2 machine\n"
+	@docker exec -i -t web2 bash
+	@exit
