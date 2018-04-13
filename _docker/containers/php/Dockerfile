@@ -5,6 +5,8 @@ ENV APPLICATION_ENV development
 RUN apt-get update && apt-get upgrade -y \
     wget \
     mc \
+    iputils-ping \
+    g++ \
     && apt-get autoremove -y --purge \
     && apt-get clean \
     && rm -Rf /tmp/*

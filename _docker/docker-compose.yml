@@ -99,14 +99,20 @@ services:
 #            - web1
 #            - composer
 
-#    composer:
-#        container_name: composer
-#        image: "composer"
-#        env_file:
-#            - "variables.env"
-#        volumes:
-#            - "../CategoriesContext:/app"
-#        command: install
+    composer:
+        container_name: composer
+        image: "composer"
+        env_file:
+            - "variables.env"
+        volumes:
+            - "../Context1:/app"
+            - "../Context2:/app"
+        command: install
+#        depends_on:
+#            - ${PHP_FPM1}
+#            - ${PHP_FPM2}
+#            - ${NGINX_HOST1}
+#            - ${NGINX_HOST2}
 
 #    myadmin:
 #        container_name: myadmin
