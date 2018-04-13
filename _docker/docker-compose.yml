@@ -109,15 +109,21 @@ services:
         container_name: composer1
         extends: composer
         volumes:
-            - "../Context1:/app"
+            - "../$APP1:/app"
         command: install
+        depends_on:
+            - ${PHP_FPM1}
+            - ${NGINX_HOST}
 
     composer2:
         container_name: composer2
         extends: composer
         volumes:
-            - "../Context2:/app"
+            - "../$APP2:/app"
         command: install
+        depends_on:
+            - ${PHP_FPM2}
+            - ${NGINX_HOST}
 
 #        depends_on:
 #            - ${PHP_FPM1}
