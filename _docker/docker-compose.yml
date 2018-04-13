@@ -8,7 +8,7 @@ services:
             context: ./containers/nginx/
             dockerfile: Dockerfile
         env_file:
-            - ".env"
+            - "variables.env"
         volumes:
             - "./config/etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
         extra_hosts:
@@ -24,14 +24,14 @@ services:
             - "../Context1:/var/www/html"
         networks:
             default:
-                ipv4_address: 192.100.10.20
+                ipv4_address: ${IP_WEB1}
         environment:
             - NGINX_HOST=${NGINX_HOST1}
             - PHP_FPM=${PHP_FPM1}
         command: /bin/sh -c "envsubst '$$NGINX_HOST $$PHP_FPM' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
         depends_on:
-            - web
-            - php1
+            - ${NGINX_HOST}
+            - ${PHP_FPM1}
 #            - mysqldb
 
     web2:
@@ -42,24 +42,24 @@ services:
             - "../Context2:/var/www/html"
         networks:
             default:
-                ipv4_address: 192.100.10.30
+                ipv4_address: ${IP_WEB2}
         environment:
             - NGINX_HOST=${NGINX_HOST2}
             - PHP_FPM=${PHP_FPM2}
         command: /bin/sh -c "envsubst '$$NGINX_HOST $$PHP_FPM' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
         depends_on:
-            - web
-            - php2
+            - ${NGINX_HOST}
+            - ${PHP_FPM2}
 #            - mysqldb
 
     php:
-        container_name: php
+        container_name: ${PHP_FPM}
         image: web/php
         build:
             context: ./containers/php/
             dockerfile: Dockerfile
         env_file:
-            - ".env"
+            - "variables.env"
         restart: always
         extra_hosts:
             - "$NGINX_HOST1:$IP_WEB1"
@@ -68,22 +68,22 @@ services:
             - "./config/etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
 
     php1:
-        container_name: php1
+        container_name: ${PHP_FPM1}
         image: web/php
-        extends: php
+        extends: ${PHP_FPM}
         volumes:
             - "../Context1:/var/www/html"
         depends_on:
-            - php
+            - ${PHP_FPM}
 
     php2:
-        container_name: php2
+        container_name: ${PHP_FPM2}
         image: web/php
-        extends: php
+        extends: ${PHP_FPM}
         volumes:
             - "../Context2:/var/www/html"
         depends_on:
-            - php
+            - ${PHP_FPM}
 
 #    application:
 #        container_name: application
@@ -103,7 +103,7 @@ services:
 #        container_name: composer
 #        image: "composer"
 #        env_file:
-#            - ".env"
+#            - "variables.env"
 #        volumes:
 #            - "../CategoriesContext:/app"
 #        command: install
@@ -127,7 +127,7 @@ services:
 #        container_name: ${MYSQL_HOST}
 #        restart: always
 #        env_file:
-#            - ".env"
+#            - "variables.env"
 #        environment:
 #            - MYSQL_DATABASE=${MYSQL_DATABASE}
 #            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}

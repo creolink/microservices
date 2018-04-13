@@ -1,5 +1,6 @@
 #!make
-include _docker/.env
+include _docker/variables.env
+export $(shell sed 's/=.*//' _docker/variables.env)
 
 ifndef VERBOSE
 MAKEFLAGS += --no-print-directory
@@ -32,7 +33,6 @@ help:
 
 docker-up:
 	@cd _docker/ && sh launch.sh
-	@exit
 
 docker-down:
 	@docker-compose -f "_docker/docker-compose.yml" down
