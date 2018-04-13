@@ -2,7 +2,7 @@ version: "2"
 services:
 
     web:
-        container_name: web
+        container_name: ${NGINX_HOST}
         image: web/nginx
         build:
             context: ./containers/nginx/
@@ -12,14 +12,14 @@ services:
         volumes:
             - "./config/etc/nginx/default.template.conf:/etc/nginx/conf.d/default.template"
         extra_hosts:
-            - "web1.develop:192.100.10.20"
-            - "web2.develop:192.100.10.30"
+            - "$NGINX_HOST1:$IP_WEB1"
+            - "$NGINX_HOST2:$IP_WEB2"
         restart: always
 
     web1:
-        container_name: web1
+        container_name: ${NGINX_HOST1}
         image: web/nginx
-        extends: web
+        extends: ${NGINX_HOST}
         volumes:
             - "../Context1:/var/www/html"
         networks:
@@ -27,16 +27,17 @@ services:
                 ipv4_address: 192.100.10.20
         environment:
             - NGINX_HOST=${NGINX_HOST1}
-        command: /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+            - PHP_FPM=${PHP_FPM1}
+        command: /bin/sh -c "envsubst '$$NGINX_HOST $$PHP_FPM' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
         depends_on:
             - web
             - php1
 #            - mysqldb
 
     web2:
-        container_name: web2
+        container_name: ${NGINX_HOST2}
         image: web/nginx
-        extends: web
+        extends: ${NGINX_HOST}
         volumes:
             - "../Context2:/var/www/html"
         networks:
@@ -44,7 +45,8 @@ services:
                 ipv4_address: 192.100.10.30
         environment:
             - NGINX_HOST=${NGINX_HOST2}
-        command: /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+            - PHP_FPM=${PHP_FPM2}
+        command: /bin/sh -c "envsubst '$$NGINX_HOST $$PHP_FPM' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
         depends_on:
             - web
             - php2
@@ -60,8 +62,8 @@ services:
             - ".env"
         restart: always
         extra_hosts:
-            - "web1.develop:192.100.10.20"
-            - "web2.develop:192.100.10.30"
+            - "$NGINX_HOST1:$IP_WEB1"
+            - "$NGINX_HOST2:$IP_WEB2"
         volumes:
             - "./config/etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
 

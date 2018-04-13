@@ -1,3 +1,6 @@
+#!make
+include _docker/.env
+
 ifndef VERBOSE
 MAKEFLAGS += --no-print-directory
 endif
@@ -38,24 +41,20 @@ docker-clean:
 	@-docker-compose -f "_docker/docker-compose.yml" exec -T php php composer.phar docker:cache:clear
 
 docker-php-1:
-	@echo "\nWelcome to PHP-1 machine\n"
-	@docker exec -i -t php1 bash
-	@exit
+	@echo "\nWelcome to $(PHP_FPM1) machine\n"
+	@docker exec -i -t $(PHP_FPM1) bash
 
 docker-php-2:
-	@echo "\nWelcome to PHP-2 machine\n"
-	@docker exec -i -t php2 bash
-	@exit
+	@echo "\nWelcome to $(PHP_FPM2) machine\n"
+	@docker exec -i -t $(PHP_FPM2) bash
 
 docker-remove-images:
 	@cd _docker/ && sh clean_images.sh
 
 docker-server-1:
-	@echo "\nWelcome to SERVER-1 machine\n"
-	@docker exec -i -t web1 bash
-	@exit
+	@echo "\nWelcome to $(NGINX_HOST1) machine\n"
+	@docker exec -i -t $(NGINX_HOST1) bash
 
 docker-server-2:
-	@echo "\nWelcome to SERVER-2 machine\n"
-	@docker exec -i -t web2 bash
-	@exit
+	@echo "\nWelcome to $(NGINX_HOST2) machine\n"
+	@docker exec -i -t $(NGINX_HOST2) bash
