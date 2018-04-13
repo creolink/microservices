@@ -21,7 +21,7 @@ services:
         image: web/nginx
         extends: ${NGINX_HOST}
         volumes:
-            - "../Context1:/var/www/html"
+            - "../$APP1:/var/www/html"
         networks:
             default:
                 ipv4_address: ${IP_WEB1}
@@ -39,7 +39,7 @@ services:
         image: web/nginx
         extends: ${NGINX_HOST}
         volumes:
-            - "../Context2:/var/www/html"
+            - "../$APP2:/var/www/html"
         networks:
             default:
                 ipv4_address: ${IP_WEB2}
@@ -72,7 +72,7 @@ services:
         image: web/php
         extends: ${PHP_FPM}
         volumes:
-            - "../Context1:/var/www/html"
+            - "../$APP1:/var/www/html"
         depends_on:
             - ${PHP_FPM}
 
@@ -81,7 +81,7 @@ services:
         image: web/php
         extends: ${PHP_FPM}
         volumes:
-            - "../Context2:/var/www/html"
+            - "../$APP2:/var/www/html"
         depends_on:
             - ${PHP_FPM}
 
@@ -104,10 +104,21 @@ services:
         image: "composer"
         env_file:
             - "variables.env"
+
+    composer1:
+        container_name: composer1
+        extends: composer
         volumes:
             - "../Context1:/app"
+        command: install
+
+    composer2:
+        container_name: composer2
+        extends: composer
+        volumes:
             - "../Context2:/app"
         command: install
+
 #        depends_on:
 #            - ${PHP_FPM1}
 #            - ${PHP_FPM2}
