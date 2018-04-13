@@ -7,3 +7,4 @@ sleep 5
 
 docker rm $(docker ps -aq) -f
 docker rmi $(docker images -q) -f
+docker network rm $(docker network ls -q)
